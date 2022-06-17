@@ -13,4 +13,9 @@ class Pergunta extends Model
 
     protected $fillable = ['id','questao'];
 
+    public function alternativas()
+    {
+        return $this->hasMany(Alternativa::class);
+    }
+
 }

@@ -13,9 +13,9 @@ class Alternativa extends Model
 
     protected $fillable = ['resposta', 'pergunta_id', 'valor_resposta'];
 
-    public function pergunta ()
+    public function pergunta()
     {
-        return $this->belongsTo(Pergunta::class, 'pergunta_id','id');
+        return $this->belongsTo(Pergunta::class);
     }
 
 }
