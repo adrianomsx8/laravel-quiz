@@ -5,9 +5,17 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Pergunta;
 use Illuminate\Http\Request;
+use App\Http\Requests\PerguntaRequest;
 
 class PerguntaController extends Controller
 {
+    protected $pergunta;
+
+    public function __construct(Pergunta $pergunta)
+    {
+        $this->pergunta = $pergunta;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,17 +23,12 @@ class PerguntaController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $posts = $this->pergunta::all();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json([
+            'status' => true,
+            'posts' => $posts
+        ]);
     }
 
     /**
@@ -34,9 +37,9 @@ class PerguntaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PerguntaRequest $request)
     {
-        $post = Pergunta::create($request->all());
+        $post = $this->pergunta::create($request->all());
 
         return response()->json([
             'status' => true,
@@ -44,29 +47,6 @@ class PerguntaController extends Controller
             'post' => $post
         ], 200);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Pergunta  $pergunta
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Pergunta $pergunta)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Pergunta  $pergunta
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Pergunta $pergunta)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -74,9 +54,16 @@ class PerguntaController extends Controller
      * @param  \App\Models\Pergunta  $pergunta
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pergunta $pergunta)
+    public function update(PerguntaRequest $request, $id)
     {
-        //
+        $pergunta =  $this->pergunta->findOrFail($id);
+        $pergunta->update($request->all());
+
+        return response()->json([
+            'status' => true,
+            'message' => "Post Updated successfully!",
+            'post' => $pergunta
+        ], 200);
     }
 
     /**
@@ -85,8 +72,14 @@ class PerguntaController extends Controller
      * @param  \App\Models\Pergunta  $pergunta
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pergunta $pergunta)
+    public function destroy($id)
     {
-        //
+        $pergunta = $this->pergunta->findOrFail($id);
+        $pergunta->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => "Post Deleted successfully!",
+        ], 200);
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\QuestionarioController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,11 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Route::apiResource('perguntas', PerguntasController::class);
-//Route::apiResource('alternativas', AlternativasController::class);
-
-Route::resource('pergunta', PerguntaController::class);
-Route::resource('alternativa', AlternativaController::class);
+Route::apiResource('pergunta', PerguntaController::class);
+Route::apiResource('alternativa', AlternativaController::class);
 Route::get('/questionario', [QuestionarioController::class, 'index']);
 
 
